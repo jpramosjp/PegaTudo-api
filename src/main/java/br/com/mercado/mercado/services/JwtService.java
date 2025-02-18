@@ -27,6 +27,9 @@ public class JwtService {
     @Value("${security.jwt.expiration-time}")
     private long jwtExpiration;
 
+    @Value("${security.jwt.expiration-time-remember}")
+    private long jwtExpirationRemember;
+
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
     }
@@ -36,7 +39,10 @@ public class JwtService {
         return claimsResolver.apply(claims);
     }
 
-    public String generateToken(UserDetails userDetails) {
+    public String generateToken(UserDetails userDetails, boolean remember) {
+        if(remember == true) {
+            return generateTokenRemember(new HashMap<>(), userDetails);
+        }
         return generateToken(new HashMap<>(), userDetails);
     }
 
@@ -44,8 +50,12 @@ public class JwtService {
         return buildToken(extraClaims, userDetails, jwtExpiration);
     }
 
-    public long getExpirationTime() {
-        return jwtExpiration;
+    public String generateTokenRemember(Map<String, Object> extraClaims, UserDetails userDetails) {
+        return buildToken(extraClaims, userDetails, jwtExpirationRemember);
+    }
+
+    public long getExpirationTime(boolean remember) {
+        return remember ? jwtExpirationRemember : jwtExpiration;
     }
 
     private String buildToken(

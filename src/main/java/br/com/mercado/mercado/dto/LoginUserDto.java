@@ -9,4 +9,6 @@ public class LoginUserDto {
     private String user;
     
     private String password;
+
+    private boolean rememberFifithDays;
 }

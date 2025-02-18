@@ -23,10 +23,21 @@ public class UserModel implements UserDetails {
     @Column(nullable = false)
     private Long id;
 
+    @Column(nullable = false)
     private String user;
+
+    @Column(nullable = false)
     private String password;
+
+    @Column(nullable = false)
     private String name;
+    
+    @Column(nullable = false)
     private String email;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UserListModel> userLists;
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

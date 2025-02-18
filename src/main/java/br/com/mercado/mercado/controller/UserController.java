@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.mercado.mercado.dto.UserResponse;
 import br.com.mercado.mercado.model.UserModel;
 import br.com.mercado.mercado.services.UserService;
 
@@ -30,9 +31,9 @@ public class UserController {
         return ResponseEntity.ok(currentUser);
     }
 
-    @GetMapping("/")
-    public ResponseEntity<List<UserModel>> allUsers() {
-        List <UserModel> users = userService.allUsers();
+    @GetMapping("/find/name")
+    public ResponseEntity<List<UserResponse>> findName(String name) {
+        List <UserResponse> users = userService.getUserByName(name);
 
         return ResponseEntity.ok(users);
     }
