@@ -2,6 +2,7 @@ package br.com.mercado.mercado.services;
 
 import org.springframework.stereotype.Service;
 
+import br.com.mercado.mercado.dto.ListDto;
 import br.com.mercado.mercado.model.ListModel;
 import br.com.mercado.mercado.repository.ListRepo;
 
@@ -9,14 +10,19 @@ import br.com.mercado.mercado.repository.ListRepo;
 public class ListService {
     
     private final ListRepo listRepo;
-    private final UserListService userListService;
 
-    public ListService(ListRepo listRepo, UserListService userListService) {
+    public ListService(ListRepo listRepo) {
         this.listRepo = listRepo;
-        this.userListService = userListService; 
     }
 
-    public ListModel createList() {
-        return new ListModel();
+    public ListModel createList(ListDto listDto) {
+        
+       ListModel listModel = ListModel.builder()
+       .name(listDto.getName())
+       .status(listDto.isStatus())
+       .duration(listDto.getDuration())
+       .build();
+
+        return listRepo.save(listModel);
     }
 }
