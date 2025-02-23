@@ -33,14 +33,11 @@ public class UserController {
     }
 
     @GetMapping("/find/name")
-    public ResponseEntity<List<UserResponse>> findName(String name) {
+    public ResponseEntity<List<UserResponse>> findName(@RequestParam String name) {
         List <UserResponse> users = userService.getUserByName(name);
 
         return ResponseEntity.ok(users);
     }
 
-    @GetMapping("/userNotInList")
-    public List<UserResponse> userNotInList(@RequestParam Long idList) {
-        return userService.getUsersNotInList(idList);
-    }
+    
 }

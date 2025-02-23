@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.mercado.mercado.dto.AddUserDto;
+import br.com.mercado.mercado.dto.GroupResponse;
 import br.com.mercado.mercado.dto.ListResponse;
 import br.com.mercado.mercado.dto.UserListDto;
 import br.com.mercado.mercado.dto.UserResponse;
-import br.com.mercado.mercado.model.ListModel;
 import br.com.mercado.mercado.services.ListService;
 import br.com.mercado.mercado.services.UserListService;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -34,12 +34,18 @@ public class GroupController {
        this.userListService = userListService;
     }
 
+    @GetMapping("/")
+    public GroupResponse getGroup(@RequestParam Long listId) {
+        return userListService.getGroupInformation(listId);
+    }
+    
+
     @PostMapping("/create")
     public ResponseEntity<ListResponse> createList(@RequestBody UserListDto userListDto) {
-        ListModel listModel = listService.createList(userListDto.getListDto());
-        userListDto.getUsersIds().stream().forEach(userId -> userListService.addUserToList(userId, listModel.getId()));
+        ListResponse listResponse = listService.createList(userListDto.getListDto());
+        userListDto.getUsersIds().stream().forEach(userId -> userListService.addUserToList(userId, listResponse.getIdList()));
 
-        return ResponseEntity.ok(ListResponse.builder().idList(listModel.getId()).build());
+        return ResponseEntity.ok(listResponse);
         
     }
 
@@ -55,6 +61,9 @@ public class GroupController {
         return userListService.getUsersByListId(idList);
     }
     
-    
+    @GetMapping("/userNotInList")
+    public List<UserResponse> userNotInList(@RequestParam Long idList) {
+        return userListService.getUsersNotInList(idList);
+    }
     
 }

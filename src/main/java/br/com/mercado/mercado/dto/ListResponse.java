@@ -7,4 +7,5 @@ import lombok.Data;
 @Builder
 public class ListResponse {
     private Long idList;
+    private String nameList;
 }
