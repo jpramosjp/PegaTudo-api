@@ -38,4 +38,17 @@ public class UserService {
             })
             .collect(Collectors.toList());
     }
+
+    
+    public List<UserResponse> getUsersNotInList(Long listId) {
+        List<UserModel> usersNotInList = userRepository.findUsersNotInList(listId);
+
+        return usersNotInList.stream()
+                .map(userModel -> UserResponse.builder()
+                        .id(userModel.getId())
+                        .name(userModel.getName())
+                        .user(userModel.getUser())
+                        .build())
+                .collect(Collectors.toList());
+    }
 }

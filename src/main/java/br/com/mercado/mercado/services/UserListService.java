@@ -2,10 +2,14 @@ package br.com.mercado.mercado.services;
 
 import br.com.mercado.mercado.model.UserListModel;
 import br.com.mercado.mercado.model.UserModel;
+import br.com.mercado.mercado.dto.UserResponse;
 import br.com.mercado.mercado.model.ListModel;
 import br.com.mercado.mercado.repository.UserRepo;
 import br.com.mercado.mercado.repository.ListRepo;
 import br.com.mercado.mercado.repository.UserListRepo;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -28,12 +32,37 @@ public class UserListService {
         ListModel list = listRepository.findById(listId)
                 .orElseThrow(() -> new RuntimeException("Lista não encontrada"));
 
+        if(validateUserInList(userId, listId)) {
+            return;
+        }
+
         UserListModel userList = UserListModel.builder()
                 .user(user)
                 .list(list)
                 .build();
 
         userListRepository.save(userList);
+    }
+
+    public boolean validateUserInList(Long userId, Long listId) {
+        if (userListRepository.existsByUserIdAndListId(userId, listId)) {
+            return true;
+        }
+        return false;
+    }
+
+    public List<UserResponse> getUsersByListId(Long listId) {
+        List<UserListModel> userLists = userListRepository.findByListId(listId);
+        return userLists.stream()
+        .map(userListModel -> {
+            var userModel = userListModel.getUser();
+            return UserResponse.builder()
+                    .id(userModel.getId())
+                    .name(userModel.getName())
+                    .user(userModel.getUser()) 
+                    .build();
+        })
+        .collect(Collectors.toList());
     }
 
 }

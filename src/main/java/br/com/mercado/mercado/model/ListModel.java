@@ -14,6 +14,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 public class ListModel {
+    public ListModel(){}
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

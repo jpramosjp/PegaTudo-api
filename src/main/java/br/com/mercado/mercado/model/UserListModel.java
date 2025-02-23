@@ -18,11 +18,11 @@ public class UserListModel {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "id_user", nullable = false)
     private UserModel user;
 
     @ManyToOne
-    @JoinColumn(name = "list_id", nullable = false)
+    @JoinColumn(name = "id_list", nullable = false)
     private ListModel list;
 
 }
