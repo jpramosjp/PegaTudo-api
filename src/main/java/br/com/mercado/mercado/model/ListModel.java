@@ -26,6 +26,4 @@ public class ListModel {
     
     private boolean status;
 
-    @OneToMany(mappedBy = "list", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<UserListModel> userLists;
 }

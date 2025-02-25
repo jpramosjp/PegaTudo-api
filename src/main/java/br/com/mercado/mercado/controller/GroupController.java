@@ -13,14 +13,13 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.mercado.mercado.dto.AddUserDto;
 import br.com.mercado.mercado.dto.GroupResponse;
 import br.com.mercado.mercado.dto.ListResponse;
+import br.com.mercado.mercado.dto.UpdateListDto;
 import br.com.mercado.mercado.dto.UserListDto;
 import br.com.mercado.mercado.dto.UserResponse;
+import br.com.mercado.mercado.model.ListModel;
 import br.com.mercado.mercado.services.ListService;
 import br.com.mercado.mercado.services.UserListService;
 import org.springframework.web.bind.annotation.RequestParam;
-
-
-
 
 @RequestMapping("/group")
 @RestController
@@ -47,6 +46,12 @@ public class GroupController {
 
         return ResponseEntity.ok(listResponse);
         
+    }
+
+    @PostMapping("/updateList")
+    public ResponseEntity<ListModel> createList(@RequestBody UpdateListDto updateListDto) {
+        ListModel listModel = listService.updateList(updateListDto);
+        return ResponseEntity.ok(listModel);
     }
 
     @PostMapping("/addUser")

@@ -19,11 +19,13 @@ public class UserListService {
     private final UserListRepo userListRepo;
     private final UserService userService;
     private final ListService listService;
+    private final ProductsListService productsListService;
 
-    public UserListService(UserListRepo userListRepo, UserService userService, ListService listService) {
+    public UserListService(UserListRepo userListRepo, UserService userService, ListService listService, ProductsListService productsListService) {
         this.userListRepo = userListRepo;
         this.userService = userService;
         this.listService = listService;
+        this.productsListService = productsListService;
     }
 
     public void addUserToList(Long userId, Long listId) {
@@ -77,11 +79,11 @@ public class UserListService {
    
 
     public GroupResponse getGroupInformation(Long listId) {
-       
         return GroupResponse.builder()
         .list(listService.getListResponse(listId))
         .userInList(getUsersByListId(listId))
         .userNotInList(getUsersNotInList(listId))
+        .products(productsListService.getProductsByListIdAndStatus(listId, true))
         .build();
     }
 }

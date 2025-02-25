@@ -1,9 +1,12 @@
 package br.com.mercado.mercado.services;
 
+import java.time.LocalDateTime;
+
 import org.springframework.stereotype.Service;
 
 import br.com.mercado.mercado.dto.ListDto;
 import br.com.mercado.mercado.dto.ListResponse;
+import br.com.mercado.mercado.dto.UpdateListDto;
 import br.com.mercado.mercado.model.ListModel;
 import br.com.mercado.mercado.repository.ListRepo;
 
@@ -36,5 +39,19 @@ public class ListService {
     public ListResponse getListResponse(Long idList) {
         ListModel listModel = listRepo.findById(idList).orElseThrow(() -> new RuntimeException("Lista não encontrada"));
         return ListResponse.builder().idList(listModel.getId()).nameList(listModel.getName()).build();
+    }
+
+    public ListModel getListModel(Long idList, LocalDateTime duration, boolean status) {
+        return listRepo.findByIdAndDurationAndStatus(idList, duration, status).orElseThrow(() -> new RuntimeException("Lista não encontrada"));
+    }
+
+    public ListModel updateList(UpdateListDto updateListDto) {
+        ListModel existingList = getListModel(updateListDto.getId());
+
+        existingList.setName(updateListDto.getName());
+        existingList.setDuration(updateListDto.getDuration());
+        existingList.setStatus(updateListDto.isStatus());
+
+        return listRepo.save(existingList);
     }
 }

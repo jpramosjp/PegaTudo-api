@@ -1,7 +1,6 @@
 package br.com.mercado.mercado.dto;
 
 import java.util.List;
-
 import lombok.Builder;
 import lombok.Data;
 
@@ -14,5 +13,7 @@ public class GroupResponse {
     private List<UserResponse> userInList;
 
     private List<UserResponse> userNotInList;
+    
+    private List<ProductListResponse> products;
 
 }
